@@ -1,0 +1,74 @@
+// load LCD library 
+#include <LiquidCrystal.h> 
+
+// set crystal pins 
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2); 
+
+const int BTN = 9; 
+const int LED = 8; 
+
+
+int ledState = LOW;     // the current state of LED
+int lastButtonState;    // the previous state of button
+int currentButtonState; // the current state of button
+int sensorValue = digitalRead(8);
+
+void setup()   
+{ 
+    Serial.begin(115200);
+	pinMode(BTN, INPUT); 
+	pinMode(LED, OUTPUT); 
+  
+	// set LCD size 
+  	lcd.begin(16,2); 
+  
+	//set start 
+  	lcd.setCursor(0,0); 
+
+  	currentButtonState = digitalRead(BTN);
+  
+  	  lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Press button to:");
+      lcd.setCursor(0,1);
+      lcd.print("switch light on");
+      Serial.print("Light is off\n");
+}
+  
+void loop() 
+{ 
+	
+
+  lastButtonState    = currentButtonState;      // save the last state
+  currentButtonState = digitalRead(BTN); // read new state
+
+  if(lastButtonState == HIGH && currentButtonState == LOW) {
+
+    ledState= !ledState;
+    if (ledState == HIGH) {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Press button to:");
+      lcd.setCursor(0,1);
+      lcd.print("switch light off");
+	  Serial.print("Light is on\n");
+
+    }  
+    else {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Press button to:");
+      lcd.setCursor(0,1);
+      lcd.print("switch light on");
+      Serial.print("Light is off\n");
+    }  
+
+    digitalWrite(LED, ledState);
+
+  }
+}
+    
+
+// schijf hier tussen je eventuele function(s) 
+
+// schijf hier tussen je eventuele function(s) 
